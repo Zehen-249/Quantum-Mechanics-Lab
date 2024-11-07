@@ -1,7 +1,13 @@
+print("#"*150)
+print("\n\nSolution of the 1-D Time Independetnt Schrodinger Equation using Finite Difference Method for Harmonic Potential\n")
+print("#"*150)
+print("\n")
+
+
 import numpy as np
 import matplotlib.pyplot as plt
 
-
+# Define potential function
 def pot_fn(x):
     return (m * (w**2) * (x**2)) * (1 / 2)
 
@@ -18,7 +24,12 @@ N = 500  # number of points
 d = (xn - x0) / (N)  # Step Size
 X = np.linspace(x0 , xn , N)  #  positions
 
-K = np.zeros((len(X), len(X)))  # Kinetic energy matrix
+print("System Parameters and Constants\n")
+print(f"h_cut = {h_cut} eV*Å\nMass of particle (m) = {m} eV/c^2\nWidth of the 1-D Square Box from {x0} Å to {xn} Å\nAngular Frequency of Potential(w) = {w}rad/s\n")
+print("#"*150)
+print("")
+
+K = np.zeros((len(X), len(X)))  # Kinetic energy matrix 
 V = np.zeros((len(X), len(X)))  # Potential energy matrix
 
 for i in range(len(X)):
@@ -41,18 +52,18 @@ z = np.argsort(eVal)
 energies = eVal[z]
 
 # Print the first three energy levels in eV
-print("First three energy levels (eV):", energies[:3])
+print("First three energy levels (eV)\n", energies[:3])
 
 #plot the first 4 eigen states
 plt.figure(figsize=(10, 6))
 for i in range(4):
     plt.subplot(2, 2, i + 1)
-    plt.plot(X, eVec[:, z[i]], label=f"n={i+1}, E{i+1}={energies[i]}", lw=1)
+    plt.plot(X, eVec[:, z[i]], label=f"n={i+1}, E{i+1} = {round(energies[i],2)}", lw=1)
     plt.axhline(0,color='k',lw=.3)
     plt.xlabel("x (Å)")
     plt.ylabel("Wave Function")
     plt.legend()
-plt.suptitle("Solution of 1-D Finite Potential Well")
+plt.suptitle("Mehendi Hasan  2230248 \nSolution of 1-D Harmonic Potential")
 
 plt.figure(figsize=(10, 6))
 for i in range(10):

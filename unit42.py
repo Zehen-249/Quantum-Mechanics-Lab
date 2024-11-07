@@ -1,20 +1,27 @@
 import numpy as np
 import matplotlib.pyplot as plt
 
+def r_dash(r):
+    if r == 0 : 
+      return "division by zero error"
+    return (r-r_)/r
+
 def pot_fn(r):
-    return -(e**2) / r
+    return D*(np.exp(-2*a*r_dash(r)) - np.exp(-a*r_dash(r)))
 
 # Define Constant parameters
-e = 3.795  # in eV*Å**(1/2)
 h_cut = 1973.0  # (eV*A)  
-m = 0.511e6  # (eV/c^2)
+D = 0.755501
+m = 940e6  # (eV/c^2)
+a=1.44
+r_ = 0.131349
 
 # Define System parameters
-r0 = 1e-5 
-rn = 10.0  
+r0 = 1.00e-7
+rn = 10 
 N = 400  # number of points
 d = (rn - r0) / (N)  # Step Size
-R = np.linspace(r0+d, rn, N)  # Radial positions
+R = np.linspace(r0, rn, N)  # Radial positions
 
 K = np.zeros((len(R), len(R)))  # Kinetic energy matrix
 V = np.zeros((len(R), len(R)))  # Potential energy matrix
@@ -23,7 +30,7 @@ for i in range(len(R)):
     for j in range(len(R)):
         if i == j:
             K[i,j] = -2
-            V[i,j] = pot_fn(R[i])
+            V[i,j] = pot_fn(r_dash(R[i]))
         elif np.abs(i - j) == 1:
             K[i,j] = 1
 

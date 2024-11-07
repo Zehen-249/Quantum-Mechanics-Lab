@@ -10,7 +10,7 @@ def pot_fn(r, a):
 e = 3.795  # in eV*Å**(1/2)
 h_cut = 1973.0  # (eV*A)
 m = 0.511e6  # (eV/c^2)
-a = [2, 5, 7]  # in Å
+a = [3,5,7]  # in Å
 
 # Define System parameters
 r0 = 0.00
@@ -19,12 +19,12 @@ N = 300  # number of points
 d = (rn - r0) / (N)  # Step Size
 R = np.linspace(r0 + d, rn - d, N - 2)  # Radial positions
 
-K = np.zeros((3, N-2, N-2))  # Kinetic energy matrix
-V = np.zeros((3, N-2, N-2))  # Potential energy matrix
+K = np.zeros((3, len(R), len(R)))  # Kinetic energy matrix
+V = np.zeros((3, len(R), len(R)))  # Potential energy matrix
 
 for k in range(len(a)):
-    for i in range(N-2):
-        for j in range(N-2):
+    for i in range(len(R)):
+        for j in range(len(R)):
             if i == j:
                 K[k, i, j] = -2
                 V[k, i, j] = pot_fn(R[i], a[k])
@@ -49,6 +49,7 @@ for k in range(len(a)):
     Z[k] = z
     energies[k] = eVal[k, z]
 
+print(energies[:,:3])
 plt.figure(figsize=(12, 8))
 
 for k in range(len(a)):
