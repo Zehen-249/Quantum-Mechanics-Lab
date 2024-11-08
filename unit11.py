@@ -1,5 +1,7 @@
 import numpy as np
 import matplotlib.pyplot as plt
+# from scipy.special import sph_harm
+
 
 def fact(x):
     if x==1 or x==0:
@@ -27,7 +29,8 @@ def find_factors(n):
 def sph_harm(l,m,theta,phi):
     N = np.sqrt((2*l + fact(l-np.abs(m)))/(4*np.pi + fact(l+np.abs(m))))
 
-    return N * asso_legendre_pol(l,m,np.cos(theta)) * np.exp(1j*m*phi)
+    # return N * asso_legendre_pol(l,m,np.cos(theta)) * np.exp(1j*m*phi)
+    return np.real(N * asso_legendre_pol(l,m,np.cos(theta)) * np.exp(1j*m*phi))
 
 def legendre_poly(l,x):
     if l == 0:
@@ -63,13 +66,14 @@ def plot_sphr_harm(l):
             m.append(j)
     
         # Plot using Matplotlib's 3D plotting
-        fig = plt.figure(figsize=(8, 6))
+       
         row,cols = find_factors(2*l[i] + 1)
 
         # iterate all values of m and plot spherical harmonics
         for j in range(len(m)):
             # Calculate the spherical harmonic Y(l, m)
             Y_lm = sph_harm(l[i], m[j], theta, phi)
+            # Y_lm = sph_harm(m[j],l[i], phi,theta)
 
             # Calculate the magnitude (for the radial distance)
             r = np.abs(Y_lm)
@@ -78,9 +82,9 @@ def plot_sphr_harm(l):
             x = r * np.sin(theta) * np.cos(phi)
             y = r * np.sin(theta) * np.sin(phi)
             z = r * np.cos(theta)
-
-            ax = fig.add_subplot(row ,cols, j+1, projection='3d')
-            ax.plot_surface(x, y, z, rstride=10, cstride=1, color='black', edgecolor='white', alpha=1)
+            fig = plt.figure(figsize=(8, 6))
+            ax = fig.add_subplot(1 ,1, 1, projection='3d')
+            ax.plot_surface(x, y, z, rstride=1, cstride=1, color='black', edgecolor='white', alpha=0.6)
 
             # Adjust plot view for better visualization
             ax.set_xlabel("X")
@@ -93,5 +97,5 @@ def plot_sphr_harm(l):
         
     
 
-l = [3,2,1,0]  # angular quantum number
+l = [3,2]  # angular quantum number
 plot_sphr_harm(l)
